@@ -87,16 +87,18 @@ app.post('/pacientes', async (req, res) => {
 
 //Edit paciente
 
-// app.update('/pacientes/:id', async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     sql = 'delete from paciente where id_paciente = :id ';
-//     const result = await BD.Open(sql, [id], true);
-//     res.json({ msg: result });
-//   } catch (err) {
-//     console.log(err.message);
-//   }
-// });
+app.put('/pacientes', async (req, res) => {
+  try {
+    const { id_paciente, nombre } = req.body;
+
+    sql =
+      'UPDATE paciente SET paciente.nombre=:nombre WHERE paciente.id_paciente=:id_paciente';
+
+    await BD.Open(sql, [id_paciente, nombre], true);
+  } catch (err) {
+    console.log(err.message);
+  }
+});
 
 //run
 app.listen(app.get('port'), () => {
