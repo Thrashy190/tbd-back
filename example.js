@@ -98,7 +98,7 @@ app.put('/pacientes/:id_paciente', async (req, res) => {
     const {
       nombre,
       apellido,
-      fecha_nacimiento,
+
       direccion,
       telefono,
       cp,
@@ -106,20 +106,11 @@ app.put('/pacientes/:id_paciente', async (req, res) => {
       peso,
     } = req.body;
 
-    sql = `UPDATE paciente SET nombre=:nombre, apellido=:apellido, fecha_nacimiento=TO_DATE(:fecha_nacimiento, 'yyyy/mm/dd hh24:mi:ss'), direccion_paciente=:direccion, telefono=:telefono, cp=:cp, altura=:altura, peso=:peso WHERE id_paciente = ${id_paciente}`;
+    sql = `UPDATE paciente SET nombre=:nombre, apellido=:apellido, direccion_paciente=:direccion, telefono=:telefono, cp=:cp, altura=:altura, peso=:peso WHERE id_paciente = ${id_paciente}`;
 
     await BD.Open(
       sql,
-      [
-        nombre,
-        apellido,
-        fecha_nacimiento,
-        direccion,
-        telefono,
-        cp,
-        altura,
-        peso,
-      ],
+      [nombre, apellido, direccion, telefono, cp, altura, peso],
       true
     );
 
