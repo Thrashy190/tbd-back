@@ -1,5 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
+const cors = require('cors');
 const app = express();
 const BD = require('./config');
 
@@ -9,6 +10,7 @@ const BD = require('./config');
 app.set('port', 3000);
 
 //middlewares
+app.use(cors());
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -47,7 +49,7 @@ app.post('/pacientes', async (req, res) => {
       nombre,
       apellido,
       fecha_nacimiento,
-      direccion_paciente,
+      direccion,
       telefono,
       cp,
       peso,
@@ -55,8 +57,11 @@ app.post('/pacientes', async (req, res) => {
       fecha_registro,
     } = req.body;
 
+    console.log(req.body);
+
     sql =
-      "INSERT INTO paciente(id_paciente,nombre,apellido,fecha_nacimiento,direccion_paciente,telefono,cp,peso,altura,fecha_registro) VALUES (:id_paciente,:nombre,:apellido,TO_DATE(:fecha_nacimiento, 'yyyy/mm/dd hh24:mi:ss'),:direccion_paciente,:telefono,:cp,:peso,:altura,TO_DATE(:fecha_registro, 'yyyy/mm/dd hh24:mi:ss'))";
+      'INSERT INTO paciente(id_paciente,nombre,apellido,fecha_nacimiento,direccion_paciente,telefono,cp,peso,altura,fecha_registro) ' +
+      "VALUES (:id_paciente,:nombre,:apellido,TO_DATE(:fecha_nacimiento, 'yyyy/mm/dd hh24:mi:ss'),:direccion,:telefono,:cp,:peso,:altura,TO_DATE(:fecha_registro, 'yyyy/mm/dd hh24:mi:ss'))";
 
     await BD.Open(
       sql,
@@ -65,7 +70,7 @@ app.post('/pacientes', async (req, res) => {
         nombre,
         apellido,
         fecha_nacimiento,
-        direccion_paciente,
+        direccion,
         telefono,
         cp,
         peso,
@@ -87,14 +92,41 @@ app.post('/pacientes', async (req, res) => {
 
 //Edit paciente
 
-app.put('/pacientes', async (req, res) => {
+app.put('/pacientes/:id_paciente', async (req, res) => {
   try {
-    const { id_paciente, nombre } = req.body;
+    const { id_paciente } = req.params;
+    const {
+      nombre,
+      apellido,
+      fecha_nacimiento,
+      direccion,
+      telefono,
+      cp,
+      altura,
+      peso,
+    } = req.body;
 
-    sql =
-      'UPDATE paciente SET paciente.nombre=:nombre WHERE paciente.id_paciente=:id_paciente';
+    sql = `UPDATE paciente SET nombre=:nombre, apellido=:apellido, fecha_nacimiento=TO_DATE(:fecha_nacimiento, 'yyyy/mm/dd hh24:mi:ss'), direccion_paciente=:direccion, telefono=:telefono, cp=:cp, altura=:altura, peso=:peso WHERE id_paciente = ${id_paciente}`;
 
-    await BD.Open(sql, [id_paciente, nombre], true);
+    await BD.Open(
+      sql,
+      [
+        nombre,
+        apellido,
+        fecha_nacimiento,
+        direccion,
+        telefono,
+        cp,
+        altura,
+        peso,
+      ],
+      true
+    );
+
+    res.status(200).json({
+      id_paciente: id_paciente,
+      nombre: nombre,
+    });
   } catch (err) {
     console.log(err.message);
   }
@@ -110,7 +142,7 @@ app.listen(app.get('port'), () => {
 //   "nombre":"Alexandra",
 //   "apellido":"Borrego",
 //   "fecha_nacimiento":"2002/07/02 21:02:44",
-//   "direccion_paciente":"Saltillo",
+//   "direccion":"Saltillo",
 //   "telefono":8441039924,
 //   "cp":21411,
 //   "peso":50,

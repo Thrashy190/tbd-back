@@ -30,9 +30,9 @@ CREATE TABLE paciente (
   peso NUMERIC NULL,
   altura NUMERIC NULL,
   fecha_registro DATE NULL,
+  antecedentes VARCHAR2 NULL,
   CONSTRAINT pk_id_paciente PRIMARY KEY(id_paciente)
 );
 
 INSERT INTO paciente VALUES (1,'Diego','Lopez',TO_DATE('2002/07/02 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),'Montessori 125',8441039924,25297,85,173,TO_DATE('2022/04/21 21:02:44', 'yyyy/mm/dd hh24:mi:ss'));
 INSERT INTO paciente VALUES (2,'Ale','Lopez',TO_DATE('1992/02/15 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),'Monterrey',8441039924,25297,75,168,TO_DATE('2022/04/21 21:02:44', 'yyyy/mm/dd hh24:mi:ss'));
-INSERT INTO paciente VALUES (3,'Michelle','Najera',TO_DATE('2002/09/25 21:02:44', 'yyyy/mm/dd hh24:mi:ss'),'Pharr 1110',8441039924,25297,70,168,TO_DATE('2022/04/21 21:02:44', 'yyyy/mm/dd hh24:mi:ss'));
