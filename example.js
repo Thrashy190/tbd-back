@@ -128,15 +128,4 @@ app.listen(app.get('port'), () => {
   console.log('Server on Port 3000');
 });
 
-// {
-//   "id_paciente":4,
-//   "nombre":"Alexandra",
-//   "apellido":"Borrego",
-//   "fecha_nacimiento":"2002/07/02 21:02:44",
-//   "direccion":"Saltillo",
-//   "telefono":8441039924,
-//   "cp":21411,
-//   "peso":50,
-//   "altura":170,
-//   "fecha_registro":"2002/07/02 21:02:44"
-// }
+
